@@ -3,6 +3,7 @@ package ru.practicum.events.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.dto.EventFullDto;
 import ru.practicum.events.dto.EventShortDto;
@@ -26,56 +27,54 @@ public class EventControllerPrivate {
     private final EventServicePrivate eventServicePriv;
 
     @GetMapping
-    public List<EventShortDto> getByUserId(
+    public ResponseEntity<List<EventShortDto>> getByUserId(
             @PathVariable("userId") @PositiveOrZero Long userId,
             @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
             @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
         log.info("Запрос событий созданных пользователем с id - " + userId);
-        return eventServicePriv.getEventsByUserId(userId, from, size);
+        return new ResponseEntity<>(eventServicePriv.getEventsByUserId(userId, from, size),HttpStatus.OK);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public EventFullDto create(
+    public ResponseEntity<EventFullDto> create(
             @PathVariable("userId") @PositiveOrZero Long userId,
             @RequestBody @Valid NewEventDto newEventDto) {
         log.info("Запрос добавления нового события от пользователя с id - " + userId);
-        return eventServicePriv.createEvent(userId, newEventDto);
+        return new ResponseEntity<>(eventServicePriv.createEvent(userId, newEventDto),HttpStatus.CREATED);
     }
 
     @GetMapping("/{eventId}")
-    public EventFullDto getFullInfoByEventIdAndUserId(
+    public ResponseEntity<EventFullDto> getFullInfoByEventIdAndUserId(
             @PathVariable("userId") @PositiveOrZero Long userId,
             @PathVariable("eventId") @PositiveOrZero Long eventId) {
         log.info("Запрос информации о событии с id - {} созданным пользователем с id - {}", eventId, userId);
-        return eventServicePriv.getEventByIdAndUserId(userId, eventId);
+        return new ResponseEntity<>(eventServicePriv.getEventByIdAndUserId(userId, eventId),HttpStatus.OK);
     }
 
     @PatchMapping("/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
-    public EventFullDto updateByUserIdAndEventId(
+    public ResponseEntity <EventFullDto> updateByUserIdAndEventId(
             @PathVariable("userId") @PositiveOrZero Long userId,
             @PathVariable("eventId") @PositiveOrZero Long eventId,
             @RequestBody UpdateEventUserRequest updateEventUserRequest) {
         log.info("Запрос изменения события с id - {} добавленного пользователем с id - {}", eventId, userId);
-        return eventServicePriv.updateEventByIdAndUserId(userId, eventId, updateEventUserRequest);
+        return new ResponseEntity<>(eventServicePriv.updateEventByIdAndUserId(userId, eventId, updateEventUserRequest),HttpStatus.OK);
     }
 
     @GetMapping("/{eventId}/requests")
-    public List<ParticipationRequestDto> getRequestByUserIdAndEventId(
+    public ResponseEntity<List<ParticipationRequestDto>> getRequestByUserIdAndEventId(
             @PathVariable("userId") @PositiveOrZero Long userId,
             @PathVariable("eventId") @PositiveOrZero Long eventId) {
         log.info("Запрос информации о запросах на участие в событии с id - {} ползователя с id - {}", eventId, userId);
-        return eventServicePriv.getRequestByUserIdAndEventId(userId, eventId);
+        return new ResponseEntity<>(eventServicePriv.getRequestByUserIdAndEventId(userId, eventId),HttpStatus.OK);
     }
 
     @PatchMapping("/{eventId}/requests")
-    @ResponseStatus(HttpStatus.OK)
-    public EventRequestStatusUpdateResult updateStatusRequestByUserIdAndEventId(
+    public ResponseEntity<EventRequestStatusUpdateResult> updateStatusRequestByUserIdAndEventId(
             @PathVariable("userId") @PositiveOrZero Long userId,
             @PathVariable("eventId") @PositiveOrZero Long eventId,
             @RequestBody EventRequestStatusUpdateRequest statusUpdateRequest) {
         log.info("Изменение статуса заявок на участие в событии с id - {} пользователя с id - {} ", eventId, userId);
-        return eventServicePriv.updateStatusRequestByUserIdAndEventId(userId, eventId, statusUpdateRequest);
+        return new ResponseEntity<>(eventServicePriv.updateStatusRequestByUserIdAndEventId(userId, eventId,
+                statusUpdateRequest),HttpStatus.OK);
     }
 }

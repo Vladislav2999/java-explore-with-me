@@ -1,10 +1,12 @@
 package ru.practicum.events.repository;
 
+import org.springframework.stereotype.Repository;
 import ru.practicum.events.model.Event;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Repository
 public interface EventRepositorySearch {
 
     List<Event> publicSearch(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,

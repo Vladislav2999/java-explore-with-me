@@ -3,6 +3,7 @@ package ru.practicum.users.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.users.dto.NewUserRequest;
 import ru.practicum.users.dto.UserDto;
@@ -37,10 +38,9 @@ public class UserControllerAdmin {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto addUser(@RequestBody @Valid NewUserRequest request) {
+    public ResponseEntity<UserDto> addUser(@RequestBody @Valid NewUserRequest request) {
         log.info("Запрос добавления нового пользователя от администратора");
-        return userServiceAdmin.createUser(request);
+        return new ResponseEntity<>(userServiceAdmin.createUser(request),HttpStatus.CREATED);
     }
 
 }

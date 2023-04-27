@@ -3,6 +3,7 @@ package ru.practicum.requests.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.requests.dto.ParticipationRequestDto;
 import ru.practicum.requests.service.RequestServicePrivate;
@@ -26,22 +27,20 @@ public class RequestControllerPrivate {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ParticipationRequestDto createByUserId(
+    public ResponseEntity<ParticipationRequestDto> createByUserId(
             @PathVariable("userId") @PositiveOrZero Long userId,
             @RequestParam(name = "eventId") @PositiveOrZero Long eventId) {
 
         log.info("Запрос на добавление запроса на участие от пользователя с id - {} на участие в событии с id - {}",
                 userId, eventId);
-        return requestServicePrivate.createRequestByUserId(userId, eventId);
+        return new ResponseEntity<>(requestServicePrivate.createRequestByUserId(userId, eventId),HttpStatus.CREATED);
     }
 
     @PatchMapping("/{requestId}/cancel")
-    @ResponseStatus(HttpStatus.OK)
-    public ParticipationRequestDto cancellationByUserIdAndRequestId(
+    public ResponseEntity<ParticipationRequestDto> cancellationByUserIdAndRequestId(
             @PathVariable("userId") @PositiveOrZero Long userId,
             @PathVariable("requestId") @PositiveOrZero Long requestId) {
         log.info("Запрос отмены запроса на участие в событии с id - {} пользователя с id - {}",requestId, userId);
-        return requestServicePrivate.cancelRequestByIdAndUserId(userId, requestId);
+        return new ResponseEntity<>(requestServicePrivate.cancelRequestByIdAndUserId(userId, requestId),HttpStatus.OK);
     }
 }

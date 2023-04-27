@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.dto.EventAdminSearch;
 import ru.practicum.events.dto.EventFullDto;
@@ -23,7 +24,7 @@ public class EventControllerAdmin {
     private final EventServiceAdmin serviceAdmin;
 
     @GetMapping
-    public List<EventFullDto> getAllByFiltering(
+    public ResponseEntity<List<EventFullDto>> getAllByFiltering(
             @RequestParam(name = "users", defaultValue = "") List<Long> users,
             @RequestParam(name = "states", defaultValue = "PENDING") List<String> states,
             @RequestParam(name = "categories", defaultValue = "") List<Long> categories,
@@ -44,15 +45,14 @@ public class EventControllerAdmin {
                 .from(from)
                 .size(size)
                 .build();
-        return serviceAdmin.getEventsWithFilters(eventAdminSearch);
+        return new ResponseEntity<>(serviceAdmin.getEventsWithFilters(eventAdminSearch),HttpStatus.OK);
     }
 
     @PatchMapping("/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
-    public EventFullDto updateDataAndStatus(
+    public ResponseEntity<EventFullDto> updateDataAndStatus(
             @PathVariable("eventId") @PositiveOrZero Long eventId,
             @RequestBody UpdateEventAdminRequest request) {
         log.info("Запрос обновления события по id от администратора - " + eventId);
-        return serviceAdmin.updateEventAdmin(eventId, request);
+        return new ResponseEntity<>(serviceAdmin.updateEventAdmin(eventId, request),HttpStatus.OK);
     }
 }

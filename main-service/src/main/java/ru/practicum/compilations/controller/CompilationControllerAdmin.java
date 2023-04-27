@@ -3,6 +3,7 @@ package ru.practicum.compilations.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.compilations.dto.CompilationDto;
 import ru.practicum.compilations.dto.NewCompilationDto;
@@ -10,6 +11,7 @@ import ru.practicum.compilations.dto.UpdateCompilationDto;
 import ru.practicum.compilations.service.CompilationServiceAdmin;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @RestController
@@ -20,11 +22,10 @@ public class CompilationControllerAdmin {
     private final CompilationServiceAdmin compilationServiceAdmin;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto create(
+    public ResponseEntity <CompilationDto> create(
             @RequestBody @Valid NewCompilationDto newCompilationDto) {
         log.info("Запрос создания подборки от администратора");
-        return compilationServiceAdmin.createCompilation(newCompilationDto);
+        return new ResponseEntity<>(compilationServiceAdmin.createCompilation(newCompilationDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{compId}")
@@ -36,10 +37,10 @@ public class CompilationControllerAdmin {
     }
 
     @PatchMapping("/{compId}")
-    public CompilationDto update(
+    public ResponseEntity<CompilationDto> update(
             @PathVariable("compId") @Positive Long compId,
             @RequestBody @Valid UpdateCompilationDto dto) {
         log.info("Запрос обновления подборки от администратора - " + compId);
-        return compilationServiceAdmin.updateCompilation(compId, dto);
+        return new ResponseEntity<>(compilationServiceAdmin.updateCompilation(compId, dto),HttpStatus.OK);
     }
 }
