@@ -3,7 +3,6 @@ services:
   stats-server:
     build: stats/stats-server
     image: stats-server-image
-    restart: on-failure
     container_name: stats_server_container
     ports:
       - "9090:9090"
