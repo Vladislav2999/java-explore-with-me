@@ -3,6 +3,7 @@ package ru.practicum.comments.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.comments.dto.CommentDto;
 import ru.practicum.comments.service.CommentServiceAdmin;
@@ -20,17 +21,17 @@ public class CommentControllerAdmin {
     private final CommentServiceAdmin commentServiceAdmin;
 
     @GetMapping("/{commentId}")
-    public CommentDto getById(@PathVariable Long commentId) {
+    public ResponseEntity<CommentDto> getById(@PathVariable Long commentId) {
         log.info("Запрос комментария по id " + commentId);
-        return commentServiceAdmin.getCommentById(commentId);
+        return new ResponseEntity<>(commentServiceAdmin.getCommentById(commentId),HttpStatus.OK);
     }
 
     @GetMapping("/user/{userId}")
-    public List<CommentDto> getByUserId(@PathVariable Long userId,
+    public ResponseEntity<List<CommentDto>>  getByUserId(@PathVariable Long userId,
                                         @PositiveOrZero @RequestParam(required = false, defaultValue = "0") Integer from,
                                         @Positive @RequestParam(required = false, defaultValue = "10") Integer size) {
         log.info("Запрос комментария по id пользователя - " + userId);
-        return commentServiceAdmin.getCommentsByUserId(userId, from, size);
+        return new ResponseEntity<>(commentServiceAdmin.getCommentsByUserId(userId, from, size),HttpStatus.OK);
     }
 
 
