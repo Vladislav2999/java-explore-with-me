@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/explore-with-me.iml" filepath="$PROJECT_DIR$/explore-with-me.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/java-explore-with-me.iml" filepath="$PROJECT_DIR$/.idea/java-explore-with-me.iml" />
       <module fileurl="file://$PROJECT_DIR$/main-service/main-service.iml" filepath="$PROJECT_DIR$/main-service/main-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/stats/stats-client/stats-client.iml" filepath="$PROJECT_DIR$/stats/stats-client/stats-client.iml" />
