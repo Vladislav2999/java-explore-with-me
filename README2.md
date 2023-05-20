@@ -14,7 +14,7 @@ API основного сервиса в свою очередь делится 
 - закрытая доступна только авторизованным пользователям;
 - административная — для администраторов сервиса.
 
-<img src="util/readmeExample.png" alt="Alt text" title="Optional title">
+<img src="utill/readmeExample.png" alt="Alt text" title="Optional title">
 
 Применяемы технологии:
 - Java 11
@@ -30,4 +30,4 @@ API основного сервиса в свою очередь делится 
 
 #### Схема базы данных:
 
-<img src="util/scheme.png" alt="Alt text" title="Optional title">
+<img src="utill/scheme.png" alt="Alt text" title="Optional title">
